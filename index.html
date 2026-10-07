@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Smurfit Class Hub</title>
+<meta name="description" content="Deadlines, exams, events, jobs, study sessions, polls and games for the UCD Smurfit MSc Business Analytics class.">
+<meta name="theme-color" content="#F4F0FF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#100A21" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Class Hub">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap">
+<link rel="stylesheet" href="/app.css">
+<script src="/config.js"></script>
+<script src="/hub-backend.js"></script>
+</head>
+<body>
+<div class="app">
+  <nav class="nav" id="nav" aria-label="Main"></nav>
+  <header class="appbar">
+    <button class="icon-btn" id="back" type="button" aria-label="Back" hidden><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="titles"><h1 id="bar-title">Class Hub</h1><div class="sub" id="bar-sub"></div></div>
+    <button class="me-btn" id="me-btn" type="button" aria-label="Class: leaderboard, classmates and invites"><span class="av" aria-hidden="true"></span></button>
+  </header>
+  <main class="scroller" id="scroller">
+    <div class="screen" id="notice-wrap" hidden style="padding-bottom:0"><div class="notice" id="notice"></div></div>
+
+    <!-- HOME -->
+    <section class="screen" id="s-home" data-screen="home"></section>
+
+    <!-- CALENDAR -->
+    <section class="screen" id="s-calendar" data-screen="calendar" hidden>
+      <div class="chips" id="cat-chips" role="group" aria-label="Category"></div>
+      <div class="cal-tools">
+        <div class="seg" role="group" aria-label="View" id="mode-seg" style="flex:0 0 auto">
+          <button type="button" data-mode="calendar" aria-pressed="true">Month</button>
+          <button type="button" data-mode="list" aria-pressed="false">List</button>
+        </div>
+        <select class="filter-sel" id="subj-filter" aria-label="Filter by subject" hidden></select>
+        <span class="lock" id="sec-lock" hidden></span>
+      </div>
+      <div class="cal-layout" id="cal-mode">
+        <div class="cal-panel" id="cal-panel">
+          <div class="cal-head">
+            <h2 id="month-label">Month</h2>
+            <div class="nav-btns">
+              <button class="icon-btn" id="prev" type="button" aria-label="Previous month"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+              <button class="btn btn-plain btn-sm" id="today-btn" type="button">Today</button>
+              <button class="icon-btn" id="next" type="button" aria-label="Next month"><svg class="i" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+            </div>
+          </div>
+          <div class="dows" id="dows"></div>
+          <div id="weeks"></div>
+          <div class="cal-legend" id="cal-legend"></div>
+          <p class="hint" style="margin:8px 0 0">Tap a coloured day to see what's on.</p>
+        </div>
+        <div class="block">
+          <div class="h-sec"><h2 id="up-title">Coming up</h2><span class="tag">next 30 days</span></div>
+          <div class="list" id="upcoming"></div>
+        </div>
+      </div>
+      <div id="list-mode" hidden></div>
+    </section>
+
+    <!-- HANGOUTS -->
+    <section class="screen" id="s-hangouts" data-screen="hangouts" hidden>
+      <div class="quick">
+        <button type="button" class="t-study" id="hg-now"><span class="q-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h12v15H6a2 2 0 0 0-2 2"/><path d="M8 8h6"/></svg></span><span><b>Studying now</b><small>Two taps, tell people where</small></span></button>
+        <button type="button" class="t-outing" id="hg-add"><span class="q-ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span><b>Plan for later</b><small>Study session or outing</small></span></button>
+        <button type="button" class="t-poll" id="poll-add"><span class="q-ic"><svg class="i" viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></span><span><b>Ask a poll</b><small>Let the class vote</small></span></button>
+      </div>
+      <div class="seg hang-seg" role="group" aria-label="Show">
+        <button type="button" data-ht="plans" aria-pressed="true">Plans</button>
+        <button type="button" data-ht="polls" aria-pressed="false">Polls</button>
+      </div>
+      <div class="hang-cols">
+        <div class="col" id="hg-col">
+          <div class="h-sec"><h2>Plans</h2><div class="chips" id="hg-filter" style="margin:0;padding:0"></div></div>
+          <div class="col" id="hg-list"></div>
+        </div>
+        <div class="col" id="poll-col"><div class="h-sec"><h2>Polls</h2></div><div class="col" id="poll-list"></div></div>
+      </div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="screen" id="s-games" data-screen="games" hidden>
+      <div id="games-lobby" class="block">
+        <div id="live-games" class="block"></div>
+        <div class="h-sec"><h2>Pick a game</h2><span class="tag">10 games</span></div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <div id="game-view" hidden></div>
+    </section>
+
+    <!-- CHAT -->
+    <section class="screen" id="s-chat" data-screen="chat" hidden>
+      <div class="chan-bar"><div class="chips" id="channels"></div></div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="edit-bar" id="edit-bar" hidden><span id="edit-label">Editing message</span><button class="btn btn-text" type="button" id="edit-cancel">Cancel</button></div>
+      <form class="composer" id="chat-form">
+        <textarea id="chat-input" rows="1" placeholder="Message #general" aria-label="Message"></textarea>
+        <button class="btn btn-primary" type="submit" id="chat-send" aria-label="Send"><svg class="i" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2-7z"/></svg></button>
+      </form>
+    </section>
+
+    <!-- UPDATES -->
+    <section class="screen" id="s-updates" data-screen="updates" hidden>
+      <div class="upd-head"><p class="hint" style="margin:0">Room changes, lecture notes, reminders, anything the class should know. Pinned posts stay on top.</p>
+        <button class="btn btn-yellow" id="upd-add" type="button">＋ Post an update</button><span class="lock" id="upd-lock" hidden></span></div>
+      <h2 class="sr-only">Class updates</h2>
+      <div class="list" id="feed" style="gap:12px"></div>
+    </section>
+
+    <!-- CLASS -->
+    <section class="screen" id="s-class" data-screen="class" hidden>
+      <div class="seg" role="group" aria-label="Class sections" id="class-seg">
+        <button type="button" data-ct="leaders" aria-pressed="true">Leaders</button>
+        <button type="button" data-ct="people" aria-pressed="false">People</button>
+        <button type="button" data-ct="roles" aria-pressed="false">Roles</button>
+        <button type="button" data-ct="invite" aria-pressed="false">Invite</button>
+        <button type="button" data-ct="about" aria-pressed="false">About</button>
+      </div>
+      <div id="ct-leaders" class="block"></div>
+      <div id="ct-people" class="block" hidden>
+        <div class="search-box"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="people-q" type="search" placeholder="Search by name or email" aria-label="Search classmates" autocomplete="off"></div>
+        <div class="panel"><div class="h-sec" style="margin-bottom:6px"><h2>In the hub</h2><span class="tag" id="joined-count">0</span></div><div id="joined"></div></div>
+      </div>
+      <div id="ct-roles" class="block" hidden>
+        <div class="panel block" id="bans-panel" hidden>
+          <div class="h-sec"><h2>Removed from the hub</h2><span class="tag" id="ban-count">0</span></div>
+          <div id="ban-list"></div>
+          <p class="hint" style="margin:0">Removed people can't open the hub. An ambassador or the developer can restore them.</p>
+        </div>
+        <div class="panel block">
+          <div class="h-sec"><h2>Class Ambassadors</h2><span class="tag" id="amb-count">0 of 5</span></div>
+          <div id="amb-list"></div>
+          <div class="block" id="amb-add-wrap">
+            <div class="field"><label for="amb-pick">Add an ambassador</label>
+              <div class="inline-form"><select id="amb-pick" class="filter-sel" style="flex:1 1 180px"></select><button class="btn btn-primary" type="button" id="amb-add">Add</button></div></div>
+          </div>
+          <p class="hint" id="perm-who" style="margin:0"></p>
+        </div>
+        <div class="panel block">
+          <div class="h-sec"><h2>Who can do what</h2></div>
+          <div class="perm-list">
+            <div><b>Everyone</b><span>Post deadlines, exams, events, jobs and updates · plan hangouts and polls · chat · play games · edit or delete their own posts and messages</span></div>
+            <div><b>Class Ambassadors</b><span>Everything above, plus edit or delete anyone's post or message if the info is wrong · pin class updates · manage the invite list</span></div>
+            <div><b>Owner (you)</b><span>Everything above, plus choose up to 5 Class Ambassadors</span></div>
+          </div>
+          <p class="hint" style="margin:0">Every edit shows who made it, so the class can always see when an ambassador changed something.</p>
+        </div>
+      </div>
+      <div id="ct-about" class="block" hidden>
+        <div class="panel row" id="acct"></div>
+        <div class="panel block">
+          <div class="h-sec"><h2>Your data</h2></div>
+          <ul class="facts">
+            <li><b>What's stored</b><span>Your name and UCD email, plus whatever you post: deadlines, updates, plans, poll votes, chat messages and game moves.</span></li>
+            <li><b>Who can see it</b><span>Only classmates signed in with a UCD account. Nothing is public and nothing is sold or shared.</span></li>
+            <li><b>Where it lives</b><span>In the class's own database, in an EU data centre.</span></li>
+            <li><b>Your rights</b><span>Delete any of your posts or messages at any time. Leaving the hub removes your profile, and can remove everything you've posted too.</span></li>
+          </ul>
+          <p class="hint" style="margin:0" id="owner-contact"></p>
+          <div class="storage" id="storage-meter" hidden><div class="row"><b>Database space</b><span id="storage-text"></span></div><div class="bar-track"><i id="storage-fill"></i></div><p class="hint" style="margin:0" id="storage-note"></p></div>
+        </div>
+        <div class="panel block danger-zone">
+          <div class="h-sec"><h2>Leave the hub</h2></div>
+          <p class="hint" style="margin:0">Removes your profile from the class list and signs you out. You can rejoin any time by signing in again.</p>
+          <label class="check"><input type="checkbox" id="leave-all"> Also delete everything I've posted</label>
+          <button class="btn btn-danger-solid" type="button" id="leave-btn" style="align-self:flex-start">Leave the hub</button>
+        </div>
+        <p class="hint" style="text-align:center;margin:0" id="app-version"></p>
+      </div>
+      <div id="ct-invite" class="block" hidden>
+        <div class="panel block">
+          <ol class="steps">
+            <li>Share this hub's link in the class group chat or by email.</li>
+            <li>Classmates open it, enter their UCD email and type the 6-digit code it sends them. No passwords or invites needed. Tell them to check Junk the first time.</li>
+            <li>Optionally add their email below to keep track of who you've asked.</li>
+          </ol>
+          <div class="field"><label for="invite-msg">Message to send them</label><textarea id="invite-msg" readonly rows="4" style="resize:vertical"></textarea></div>
+          <button class="btn btn-primary" type="button" id="invite-copy" style="align-self:flex-start">Copy message</button>
+        </div>
+        <div class="panel block">
+          <div class="h-sec"><h2>Invite list</h2><span class="tag" id="invite-count">0</span></div>
+          <form class="inline-form" id="roster-form">
+            <input id="roster-email" type="email" placeholder="classmate@ucdconnect.ie" aria-label="Classmate email" required>
+            <button class="btn btn-primary" type="submit">Add</button>
+          </form>
+          <div class="err" id="roster-err"></div>
+          <div id="roster"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<button class="fab" id="fab" type="button" aria-label="Add something"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+
+<!-- action sheet -->
+<div class="overlay" id="new-overlay" role="dialog" aria-modal="true" aria-label="Add to the hub" hidden>
+  <div class="sheet" id="new-sheet"><div class="grab"></div><h3>Add to the hub</h3><div id="new-actions" class="block"></div>
+    <div class="actions"><button class="btn btn-plain" type="button" data-closeov="new-overlay">Cancel</button></div></div>
+</div>
+
+<!-- composer -->
+<div class="overlay" id="post-overlay" role="dialog" aria-modal="true" aria-label="New post" hidden>
+  <form class="sheet" id="post-form">
+    <div class="grab"></div>
+    <h3 id="post-heading">New post</h3>
+    <div class="typeseg" id="type-seg"></div>
+    <div class="field" id="subject-row"><label for="p-subject">Subject</label><input id="p-subject" maxlength="80" list="subjects" placeholder="e.g. MIS41110 Programming for Analytics"></div>
+    <datalist id="subjects"></datalist>
+    <div class="field"><label for="p-title">Title</label><input id="p-title" required maxlength="120"></div>
+    <div class="form-row" id="date-row">
+      <div class="field"><label for="p-start" id="l-start">Start</label><input id="p-start" type="date"></div>
+      <div class="field"><label for="p-end" id="l-end">End</label><input id="p-end" type="date"></div>
+      <div class="field"><label for="p-time" id="l-time">Time</label><input id="p-time" type="time"></div>
+    </div>
+    <div class="field"><label for="p-tag" id="l-tag">Module</label><input id="p-tag" maxlength="80"></div>
+    <div class="field"><label for="p-link">Link (optional)</label><input id="p-link" type="url" placeholder="https://"></div>
+    <div class="field"><label for="p-body">Details</label><textarea id="p-body" rows="3" maxlength="2000"></textarea></div>
+    <label class="check" id="pin-row"><input type="checkbox" id="p-pin"> Pin to the top of Class updates</label>
+    <div class="err" id="post-err"></div>
+    <div class="actions"><button class="btn btn-plain" type="button" id="post-cancel">Cancel</button><button class="btn btn-primary" type="submit" id="post-save">Post</button></div>
+  </form>
+</div>
+
+<!-- item detail -->
+<div class="overlay" id="item-overlay" role="dialog" aria-modal="true" aria-label="Details" hidden><div class="sheet" id="item-modal"></div></div>
+
+<!-- hangout composer -->
+<div class="overlay" id="hg-overlay" role="dialog" aria-modal="true" aria-label="Plan for later" hidden>
+  <form class="sheet t-study" id="hg-form">
+    <div class="grab"></div>
+    <h3 id="hg-heading">Plan something</h3>
+    <div class="typeseg" id="hk-seg">
+      <button type="button" class="t-study" data-hk="study" aria-pressed="true">Study session</button>
+      <button type="button" class="t-outing" data-hk="outing" aria-pressed="false">Outing</button>
+    </div>
+    <div class="field"><label for="h-title">What</label><input id="h-title" required maxlength="100"></div>
+    <div class="field"><label for="h-where">Where</label><input id="h-where" maxlength="80"></div>
+    <div class="form-row">
+      <div class="field"><label for="h-date">Date</label><input id="h-date" type="date" required></div>
+      <div class="field"><label for="h-time">From</label><input id="h-time" type="time"></div>
+      <div class="field"><label for="h-until">Until</label><input id="h-until" type="time"></div>
+    </div>
+    <div class="form-row" style="grid-template-columns:1fr 2fr">
+      <div class="field" style="grid-column:auto"><label for="h-cap">Spots</label><input id="h-cap" type="number" min="1" max="200" inputmode="numeric" placeholder="Any"></div>
+      <div class="field"><label for="h-body">Details</label><input id="h-body" maxlength="500" placeholder="Bring laptops, we'll go through week 4"></div>
+    </div>
+    <div class="err" id="h-err"></div>
+    <div class="actions"><button class="btn btn-plain" type="button" data-closeov="hg-overlay">Cancel</button><button class="btn btn-primary" type="submit" id="h-save">Post</button></div>
+  </form>
+</div>
+
+<!-- studying now (quick) -->
+<div class="overlay" id="now-overlay" role="dialog" aria-modal="true" aria-label="Studying now" hidden>
+  <form class="sheet t-study" id="now-form">
+    <div class="grab"></div>
+    <h3>Where are you studying?</h3>
+    <div class="typeseg" id="now-where"></div>
+    <div class="field" id="now-other-row" hidden><label for="now-other">Where exactly?</label><input id="now-other" maxlength="60" placeholder="e.g. Room Q012"></div>
+    <span class="flabel">For how long?</span>
+    <div class="typeseg" id="now-long"></div>
+    <div class="field"><label for="now-note">Note (optional)</label><input id="now-note" maxlength="140" placeholder="e.g. Doing the Python problem set, come join"></div>
+    <div class="err" id="now-err"></div>
+    <div class="actions"><button class="btn btn-plain" type="button" data-closeov="now-overlay">Cancel</button><button class="btn btn-yellow" type="submit" id="now-save">I'm here, join me</button></div>
+  </form>
+</div>
+
+<!-- poll composer -->
+<div class="overlay" id="poll-overlay" role="dialog" aria-modal="true" aria-label="New poll" hidden>
+  <form class="sheet t-poll" id="poll-form">
+    <div class="grab"></div>
+    <h3>New poll</h3>
+    <div class="field"><label for="q-text">Question</label><input id="q-text" required maxlength="140" placeholder="e.g. Where should we go after Friday's lecture?"></div>
+    <div class="field"><span class="flabel">Options</span><div class="opt-inputs" id="q-opts"></div></div>
+    <button class="btn btn-plain btn-sm" type="button" id="q-more" style="align-self:flex-start">＋ Add option</button>
+    <div class="err" id="q-err"></div>
+    <div class="actions"><button class="btn btn-plain" type="button" data-closeov="poll-overlay">Cancel</button><button class="btn btn-primary" type="submit" id="q-save">Post poll</button></div>
+  </form>
+</div>
+
+<!-- welcome -->
+<div class="overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-label="Welcome" hidden>
+  <form class="sheet" id="welcome-form">
+    <div class="grab"></div>
+    <div class="welcome-top"><span id="w-av"></span><div><h3 id="w-title">Welcome to the Class Hub</h3><p class="hint" style="margin:2px 0 0" id="w-email"></p></div></div>
+    <p style="margin:0;font-weight:600">Deadlines, exams, events, jobs, study sessions, polls, games and a class chat, all in one place.</p>
+    <ul class="facts">
+      <li><b>You appear as your UCD name</b><span>Your name and UCD email are visible to classmates, so everyone knows who's who.</span></li>
+      <li><b>Anyone can post</b><span>If something's wrong, a Class Ambassador can fix it, and the edit shows who made it.</span></li>
+      <li><b>Earn points</b><span>Adding deadlines, planning study sessions and starting polls puts you on the weekly leaderboard.</span></li>
+    </ul>
+    <div class="actions"><button class="btn btn-yellow" type="submit">Let's go</button></div>
+  </form>
+</div>
+
+<div class="banned" id="banned" role="alertdialog" aria-modal="true" aria-labelledby="banned-title" hidden>
+  <div class="banned-card"><h2 id="banned-title">You've been removed from the Class Hub</h2><p id="banned-why"></p><p class="hint" id="banned-contact"></p></div>
+</div>
+<canvas id="fx" hidden></canvas>
+<div class="win-banner" id="win-banner" hidden><b id="win-title">You win!</b><span id="win-sub"></span></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<noscript><p style="padding:24px;font-family:sans-serif">The Class Hub needs JavaScript turned on.</p></noscript>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+{
+  "name": "Smurfit Class Hub",
+  "short_name": "Class Hub",
+  "description": "Deadlines, exams, events, jobs, study sessions, polls and games for the UCD Smurfit MSc Business Analytics class.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#F2F5FB",
+  "theme_color": "#1846D8",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "id": "/",
+  "orientation": "portrait",
+  "lang": "en-IE",
+  "categories": [
+    "education",
+    "productivity",
+    "social"
+  ],
+  "shortcuts": [
+    {
+      "name": "Calendar",
+      "url": "/#calendar",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Class updates",
+      "url": "/#updates",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "url": "/#chat",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
